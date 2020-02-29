@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .forms import LoginForm
 
@@ -29,4 +30,10 @@ def user_login(request):
     else:  # на практике сначала будет выполняться вот эта часть кода, когда пользователь отправляет GET-запрос
         form = LoginForm()
     return render(request, "account/login.html", {"form": form})
+
+
+@login_required
+def dashboard(request):
+    return render(request, "account/dashboard.html", {"section": "dashboard"})
+    # с помощью section каким-то образом становится понятно какой раздел просматривает пользователь (хз как)
 
