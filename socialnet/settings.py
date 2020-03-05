@@ -114,3 +114,14 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+# Redirect URLs
+
+LOGIN_REDIRECT_URL = "dashboard"  # адрес куда полетит пользователь после логина, если не указана GET "next"
+LOGIN_URL = "login"  # адрес который будет использоваться при необходимости залогиниться
+LOGOUT_URL = "logout"
+
+
+# SMTP-заглушка (настроить smtp как в прошлом проекте)
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
