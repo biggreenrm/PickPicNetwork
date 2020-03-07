@@ -35,4 +35,5 @@ urlpatterns = [
         auth_views.PasswordResetDoneView.as_view(),
         name="password_reset_complete",
     ),
+    path("register/", views.register, name="register"),
 ]
