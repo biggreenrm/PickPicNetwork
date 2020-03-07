@@ -125,3 +125,9 @@ LOGOUT_URL = "logout"
 # SMTP-заглушка (настроить smtp как в прошлом проекте)
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+# Media settings
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")

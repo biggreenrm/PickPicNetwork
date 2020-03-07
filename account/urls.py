@@ -1,5 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
@@ -36,4 +38,10 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("register/", views.register, name="register"),
+    path("edit/", views.edit_account, name="edit_account"),
 ]
+
+# static подходит только для локальной разработки
+# эта настройка теперь позволят Джанго возвращать файлы при обращении по урл
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
