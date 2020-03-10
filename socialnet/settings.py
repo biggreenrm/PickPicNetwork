@@ -25,25 +25,41 @@ SECRET_KEY = "tgo1!g&butvd&n0*_oi6han458-_%1^v$!0ja=-)pbsmge=yzb"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["mysite.com", "localhost", "127.0.0.1"]
 
 # backends for authentication
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "account.authentication.EmailAuthBackend",
+    "social_core.backends.facebook.FacebookOAuth2",
 ]
+
+"""Settings for logging by Facebook account"""
+
+SOCIAL_AUTH_FACEBOOK_KEY = (
+    "188812629085947"  # Facebook app id (из кабинета разработчика)
+)
+SOCIAL_AUTH_FACEBOOK_SECRET = (
+    "5b4e25ec043ac89f46bbcddcebf3d400"  # Facebook app secret (оттуда же)
+)
+SOCIAL_AUTH_FACEBOOK_SCOPE = [
+    "email"
+]  # параметры, которые запрашиваются у пользователя при попытке залогиниться
+
 
 # Application definition
 
 INSTALLED_APPS = [
     "account.apps.AccountConfig",  # Added after creating app by "$ django-admin startapp account"
+    "images.apps.ImagesConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "social_django",
 ]
 
 MIDDLEWARE = [
