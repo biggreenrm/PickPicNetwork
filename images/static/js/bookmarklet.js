@@ -1,6 +1,6 @@
 (function () {
     var jquery_version = '3.3.1';
-    var site_url = 'https://cd8f9755.ngrok.io';
+    var site_url = 'https://56d3adb3.ngrok.io/';
     var static_url = site_url + 'static/';
     var min_width = 100;
     var min_height = 100;
@@ -28,7 +28,7 @@
         jQuery.each(jQuery('img[src$="jpg"]'), function (index, image) {
             if (jQuery(image).width() >= min_width && jQuery(image).height() >= min_height) {
                 image_url = jQuery(image).attr('src');
-                jQuery('#bookmarklet .images').append('<a href="#"><img src="' + image_url + '" /></a>');
+                jQuery('#bookmarklet .images').append('<a href="#"><img src="' + image_url + '"/></a>');
             }
         });
 

@@ -25,7 +25,7 @@ SECRET_KEY = "tgo1!g&butvd&n0*_oi6han458-_%1^v$!0ja=-)pbsmge=yzb"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["mysite.com", "localhost", "127.0.0.1", "cd8f9755.ngrok.io"]
+ALLOWED_HOSTS = ["mysite.com", "localhost", "127.0.0.1", "56d3adb3.ngrok.io"]
 
 # backends for authentication
 
@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "social_django",
+    "sorl.thumbnail",
 ]
 
 MIDDLEWARE = [
