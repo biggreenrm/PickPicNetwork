@@ -36,7 +36,7 @@ def image_detail(request, id, slug):
 @require_POST
 def image_like(request):
     image_id = request.POST.get("id")
-    action = reques.POST.get("action")
+    action = request.POST.get("action")
     if image_id and action:
         try:
             image = Image.objects.get(id=image_id)

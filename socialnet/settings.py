@@ -25,7 +25,7 @@ SECRET_KEY = "tgo1!g&butvd&n0*_oi6han458-_%1^v$!0ja=-)pbsmge=yzb"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["mysite.com", "localhost", "127.0.0.1", "56d3adb3.ngrok.io"]
+ALLOWED_HOSTS = ["mysite.com", "localhost", "127.0.0.1", "0352c3a0.ngrok.io",]
 
 # backends for authentication
 
@@ -158,4 +158,4 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Media settings
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")   
