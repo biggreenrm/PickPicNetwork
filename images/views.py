@@ -9,28 +9,30 @@ from .models import Image
 from common.decorators import ajax_required
 
 # Create your views here.
-
 @login_required
 def image_list(request):
     images = Image.objects.all()
-    paginator = Paginator('images', 8)
+    paginator = Paginator(images, 8)
     page = request.GET.get('page')
     try:
         images = paginator.page(page)
     except PageNotAnInteger:
-        # Если переданная страница не является целым числом - вернуть первую
+        # If page is not an integer deliver the first page
         images = paginator.page(1)
     except EmptyPage:
         if request.is_ajax():
-            # Если получен AJAX-запрос с номером страницы большим, чем их количество - вернуть пустую страницу
+            # If the request is AJAX and the page is out of range
+            # return an empty page
             return HttpResponse('')
-            # Если номер страницы в обычном запросе больше, чем их количество - вернуть последнюю страницу
+        # If page is out of range deliver last page of results
         images = paginator.page(paginator.num_pages)
     if request.is_ajax():
-        return render(request, 'images/image/list_ajax.html',
+        return render(request,
+                      'images/image/list_ajax.html',
                       {'section': 'images', 'images': images})
-    return render(request, 'images/image/list.html',
-                  {'section': images, 'images': images})
+    return render(request,
+                  'images/image/list.html',
+                   {'section': 'images', 'images': images})
 
 
 def image_detail(request, id, slug):
