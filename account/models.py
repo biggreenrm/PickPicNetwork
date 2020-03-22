@@ -29,7 +29,9 @@ class Contact(models.Model):
     def __str__(self):
         return '{} follows {}'.format(self.user_from, self.user_to)
 
-
+# Динамическое добавление поля в класс User
+# Обусловлено тем, что User в данном случае - встроенная модель
+# Существуют и другие варианты расширения модели
 User.add_to_class('following',
                   models.ManyToManyField('self',
                                          through=Contact,

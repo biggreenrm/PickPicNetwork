@@ -1,7 +1,8 @@
 from django.http import HttpResponse
+from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from .models import Profile
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
@@ -24,6 +25,29 @@ def register(request):
     else:
         user_form = UserRegistrationForm()
     return render(request, "account/register.html", {"user_form": user_form})
+
+
+@login_required
+def edit_account(request):
+    if request.method == "POST":
+        user_form = UserEditForm(instance=request.user, data=request.POST)
+        profile_form = ProfileEditForm(
+            instance=request.user.profile, data=request.POST, files=request.FILES
+        )
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, "Your profile updated successfully")
+        else:
+            messages.error(request, "Error updating your profile")
+    else:
+        user_form = UserEditForm(instance=request.user)
+        profile_form = ProfileEditForm(instance=request.user.profile)
+    return render(
+        request,
+        "account/edit.html",
+        {"user_form": user_form, "profile_form": profile_form},
+    )
 
 
 def user_login(request):
@@ -56,25 +80,11 @@ def dashboard(request):
     return render(request, "account/dashboard.html", {"section": "dashboard"})
     # с помощью section каким-то образом становится понятно какой раздел просматривает пользователь (хз как)
 
-
 @login_required
-def edit_account(request):
-    if request.method == "POST":
-        user_form = UserEditForm(instance=request.user, data=request.POST)
-        profile_form = ProfileEditForm(
-            instance=request.user.profile, data=request.POST, files=request.FILES
-        )
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            messages.success(request, "Your profile updated successfully")
-        else:
-            messages.error(request, "Error updating your profile")
-    else:
-        user_form = UserEditForm(instance=request.user)
-        profile_form = ProfileEditForm(instance=request.user.profile)
-    return render(
-        request,
-        "account/edit.html",
-        {"user_form": user_form, "profile_form": profile_form},
-    )
+def user_list(request):
+    users = User.objects.filter(is_active=True)
+    return render(request,
+                  "account/user/list.html",
+                  {'section': 'people',
+                   'users': users})
+
