@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 from django.urls import reverse
+from autoslug import AutoSlugField
 
 
 # Create your models here.
@@ -14,7 +15,8 @@ class Image(models.Model):
         on_delete=models.CASCADE,
     )
     title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, blank=True)
+    #slug = models.SlugField(max_length=200, blank=True)
+    slug = AutoSlugField(populate_from='title')
     url = models.URLField()
     image = models.ImageField(upload_to="images/%Y/%m/%d")
     description = models.TextField(blank=True)
@@ -28,7 +30,8 @@ class Image(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            #self.slug = slugify(self.title)
+            pass
         super(Image, self).save(*args, **kwargs)
 
     def get_absolute_url(self):

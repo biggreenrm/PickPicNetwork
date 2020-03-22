@@ -25,7 +25,7 @@ SECRET_KEY = "tgo1!g&butvd&n0*_oi6han458-_%1^v$!0ja=-)pbsmge=yzb"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["mysite.com", "localhost", "127.0.0.1", "231cf509.ngrok.io",]
+ALLOWED_HOSTS = ["mysite.com", "localhost:8000", "127.0.0.1", "503a384c.ngrok.io",]
 
 # backends for authentication
 
