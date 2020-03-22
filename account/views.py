@@ -80,6 +80,8 @@ def dashboard(request):
     return render(request, "account/dashboard.html", {"section": "dashboard"})
     # с помощью section каким-то образом становится понятно какой раздел просматривает пользователь (хз как)
 
+
+# view для отображения списка активных пользователей
 @login_required
 def user_list(request):
     users = User.objects.filter(is_active=True)
@@ -88,3 +90,11 @@ def user_list(request):
                   {'section': 'people',
                    'users': users})
 
+
+@login_required
+def user_detail(request, username):
+    user = get_object_or_404(User, username=username, is_active=True)
+    return render(request,
+                  "account/user/detail.html",
+                  {'section': 'people',
+                   'user': user})
