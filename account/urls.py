@@ -40,7 +40,8 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("edit/", views.edit_account, name="edit_account"),
     path("users/", views.user_list, name="user_list"),
-    path("user/<username>/", views.user_detail, name="user_detail"),
+    path("users/follow/", views.user_follow, name="user_follow"),
+    path("users/<username>/", views.user_detail, name="user_detail"),
 ]
 
 # static подходит только для локальной разработки
