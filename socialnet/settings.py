@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -159,3 +160,9 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")   
+
+# Other
+
+ABSOLUTE_URL_OVERRIDES = { # Эта настройка добавляет метод get_absoluteл_url для всех моделей указанных в ней
+    'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])
+}

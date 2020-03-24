@@ -11,6 +11,18 @@ from common.decorators import ajax_required
 # Create your views here.
 @login_required
 def image_list(request):
+    """Список изображений.
+    
+    
+    В переменную складываются все объекты модели Image. Paginator делит весь объём на пулы по 8 штук.
+    Далее пробуем вынуть из GET-запроса номер страницы, которую хочет получить пользователь. Если 8 штук
+    не набирается, значит "страниц меньше чем одна" и на первой рисуется то, что есть. Если странциа больше,
+    чем насчитал Paginator - рисуется '' (то есть ничто). Дальше происходит рендеринг страниц, где страница
+    с ajax вложена в html-страницу со списком.
+    
+    
+    """
+    
     images = Image.objects.all()
     paginator = Paginator(images, 8)
     page = request.GET.get('page')
@@ -35,6 +47,7 @@ def image_list(request):
                    {'section': 'images', 'images': images})
 
 
+# view достающее объект из БД(Images) по id и slug, и рисующее его
 def image_detail(request, id, slug):
     image = get_object_or_404(Image, id=id, slug=slug)
     return render(
@@ -44,6 +57,21 @@ def image_detail(request, id, slug):
 
 @login_required
 def image_create(request):
+    """Создание изображения.
+    
+    
+    Подгружается форма для создания изображений, где картинка берётся из
+    GET-запроса (при помощи jQuery-скрипта по выниманию картинок с других
+    ресурсов). Когда запрос становится не GET, а POST - форма проверяется
+    на правильность, форматируется по единому образцу, сохраняется без
+    добавления в БД, получает имя юзера исходя из того, кто отправляет
+    запрос. После всего этого она уже сохраняется в БД как объект,
+    пользователь редиректится на ту страницу, которая будет являться
+    адресом данного изображения.
+    
+    
+    """
+    
     if request.method == "POST":
         form = ImageCreateForm(data=request.POST)
         if form.is_valid():
@@ -62,6 +90,17 @@ def image_create(request):
 @login_required
 @require_POST
 def image_like(request):
+    """Лайк для изображений.
+    
+    
+    Из POST-запроса вынимаются параметры id и action, происходит обращение к БД с попыткой найти
+    изображение с указанным id. И если действие в POST-запросе 'like' - к объекту БД он добавляется,
+    в противном случае - удаляется. После всего view возращает JsonResponse в котором сообщает,
+    что всё чики-пики.
+    
+    
+    """
+    
     image_id = request.POST.get("id")
     action = request.POST.get("action")
     if image_id and action:

@@ -11,6 +11,18 @@ from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditFor
 
 
 def register(request):
+    """Регистрация пользователя.
+    
+    
+    Заполнение формы в блоке 'else'. Проверка правильности формы.
+    Сохранение пользователя и пароля без сохранения в БД (применяется
+    шифрование введённого пароля, т.к. в БД нельзя хранить наглядные
+    пароли). Финальное сохранение пользователя и пароля в БД и рендер
+    страницы окончания регистрации.
+
+
+    """
+    
     if request.method == "POST":
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
@@ -29,6 +41,20 @@ def register(request):
 
 @login_required
 def edit_account(request):
+    """Редактирование аккаунта.
+    
+    
+    Путём отправки запроса, имеющем данные о том, какой пользователь его отправляет,
+    загружается форма для редактирования аккаунта и затем профиля.
+    После редактирования они отправляются методом POST с аргументами содержащими
+    данные о том, кто есть пользователь и редактируемой им информацией.
+    После проверки на правильность заполнения форм либо обе сохраняются и
+    рендерится страница с сообщением об успешном проведении операции,
+    либо не сохраняются и появляется сообщение об ошибке.
+    
+    
+    """
+    
     if request.method == "POST":
         user_form = UserEditForm(instance=request.user, data=request.POST)
         profile_form = ProfileEditForm(
@@ -46,11 +72,24 @@ def edit_account(request):
     return render(
         request,
         "account/edit.html",
-        {"user_form": user_form, "profile_form": profile_form},
+        {"user_form": user_form,
+         "profile_form": profile_form},
     )
 
 
 def user_login(request):
+    """Логирование пользователя.
+    
+    
+    Пользователь отправляет запрос и получает форму логина, которая заполняется и
+    отправляется на сервер POST-запросом. Данные в форме приводятся к единому формату,
+    после чего функция authenticate проверяет есть ли в базе юзернейм с введённым
+    паролем. Если есть, он логининится в систему, если не логинится, то в зависимости
+    от причины произошедшего рисуется соответствующий HttpResponse.
+    
+    
+    """
+    
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -59,7 +98,7 @@ def user_login(request):
             )  # этот метода обрезает лишние данные и проверяет их, подгоняя по форматированию
             user = authenticate(
                 request, username=cd["username"], password=cd["password"]
-            )  # данная функция проверяет есть ли в базе данный юзернейм с указанным паролем. Есть - окей. Нет - вернётся None
+            ) 
         if user is not None:
             if user.is_active:
                 login(
@@ -70,7 +109,7 @@ def user_login(request):
                 return HttpResponse("Disabled account")
         else:
             return HttpResponse("Invalid login")
-    else:  # на практике сначала будет выполняться вот эта часть кода, когда пользователь отправляет GET-запрос
+    else:
         form = LoginForm()
     return render(request, "account/login.html", {"form": form})
 
@@ -91,6 +130,7 @@ def user_list(request):
                    'users': users})
 
 
+# view вынимает пользователя из БД, принимая на вход запроси его имя
 @login_required
 def user_detail(request, username):
     user = get_object_or_404(User, username=username, is_active=True)

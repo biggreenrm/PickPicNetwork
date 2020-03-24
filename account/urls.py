@@ -1,5 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
+# в данном случае используется менеджер контекста чтобы рукописные view не смешались с батареечными
 from . import views
 
 urlpatterns = [
@@ -17,7 +18,9 @@ urlpatterns = [
         name="password_change_done",
     ),
     path(
-        "password_reset/", auth_views.PasswordResetView.as_view(), name="password_reset"
+        "password_reset/",
+        auth_views.PasswordResetView.as_view(),
+        name="password_reset",
     ),
     path(
         "password_reset/done/",
