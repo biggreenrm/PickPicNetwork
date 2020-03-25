@@ -59,6 +59,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "XXX"  # Google Consumer Secret
 INSTALLED_APPS = [
     "account.apps.AccountConfig",  # Added after creating app by "$ django-admin startapp account"
     "images.apps.ImagesConfig",
+    "actions.apps.ActionsConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
