@@ -15,7 +15,6 @@ class Image(models.Model):
         on_delete=models.CASCADE,
     )
     title = models.CharField(max_length=200)
-    #slug = models.SlugField(max_length=200, blank=True)
     slug = AutoSlugField(populate_from='title')
     url = models.URLField()
     image = models.ImageField(upload_to="images/%Y/%m/%d")
@@ -25,12 +24,12 @@ class Image(models.Model):
         settings.AUTH_USER_MODEL, related_name="images_liked", blank=True
     )
 
-    def __str__(self):  # Определяет как будет отображаться модель в консоли
+    # Определяет как будет отображаться модель в консоли
+    def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            #self.slug = slugify(self.title)
             pass
         super(Image, self).save(*args, **kwargs)
 
