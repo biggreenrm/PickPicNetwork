@@ -17,7 +17,7 @@
                     {% if target.image %}
                         {% thumbnail target.image "80x80" crop="100%" as im %}
                             <a href="{{ target.get_absolute_url }}">
-                                <img src="{{ im.url}}" class="item-img">
+                                <img src="{{ im.url }}" class="item-img">
                             </a>
                         {% endthumbnail %}
                     {% endif %}
@@ -27,7 +27,7 @@
     <!-- Отрисовывается информация о том кто совершил действие, какое и над чем (всё заворачивается в ссылки) -->
         <div class="info">
             <p>
-                <span class="date">{{action.created|timesince }} ago</span><br/>
+                <span class="date">{{ action.created|timesince }} ago</span><br/>
                 <a href="{{ user.get_absolute_url }}">{{ user.first_name }}</a>
                 {{ action.verb }}
                 {% if action.target %}

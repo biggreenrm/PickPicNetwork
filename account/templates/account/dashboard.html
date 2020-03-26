@@ -3,7 +3,6 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-
     <h1>Dashboard</h1>
         {% with total_images_created=request.user.images_created.count %}
             <p>Welcome to your Dashboard. You have bookmarked
@@ -23,5 +22,4 @@
             {% include 'actions/action/detail.html' %}
         {% endfor %}
     </div>
-
 {% endblock %}
