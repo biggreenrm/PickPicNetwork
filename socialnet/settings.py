@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
     "social_django",
     "sorl.thumbnail",
 ]
@@ -78,6 +79,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "socialnet.urls"
@@ -167,3 +169,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 ABSOLUTE_URL_OVERRIDES = { # Эта настройка добавляет метод get_absoluteл_url для всех моделей указанных в ней
     'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])
 }
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
