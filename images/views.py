@@ -57,8 +57,9 @@ def image_list(request):
 def image_detail(request, id, slug):
     image = get_object_or_404(Image, id=id, slug=slug)
     
-    # Добавление +1 просмотра при помощи Redis
+    # Добавление +1 просмотра при помощи Redis и увеличение рейтинга +1
     total_views = r.incr('image:{}:views'.format(image.id))
+    r.zincrby('image.ranking', image.id, 1)
     return render(request, "images/image/detail.html", {"section": "images",
                                                         "image": image,
                                                         "total_views": total_views})
@@ -119,4 +120,18 @@ def image_like(request):
         except:
             pass
     return JsonResponse({"status": "ok"})
+
+
+@login_required
+def image_ranking(request):
+    # Получаем набор рейтинга картинок
+    image_ranking = r.zrange('image_ranking', 0, -1, desc=True)[:10]
+    image_ranking_ids = [int(id) for id in image_ranking]
+    # Получаем отсортированный список самых популярных картинок
+    most_viewed = list(Image.objects.filter(id__in=image_ranking_ids))
+    most_viewed.sort(key=lambda x: image_ranking_ids.index(x.id))
+    return render(request,
+                  'images/image/ranking.html',
+                  {'section': 'images',
+                   'most_viewed': most_viewed})
 
