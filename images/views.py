@@ -8,6 +8,14 @@ from .forms import ImageCreateForm
 from .models import Image
 from actions.utils import create_action
 from common.decorators import ajax_required
+import redis
+from django.conf import settings
+
+# Подключение к Redis
+r = redis.StrictRedis(host=settings.REDIS_HOST,
+                      port=settings.REDIS_PORT,
+                      db=settings.REDIS_DB)
+
 
 # Create your views here.
 @login_required
@@ -48,9 +56,12 @@ def image_list(request):
 # view достающее объект из БД(Images) по id и slug, и рисующее его
 def image_detail(request, id, slug):
     image = get_object_or_404(Image, id=id, slug=slug)
-    return render(
-        request, "images/image/detail.html", {"section": "images", "image": image}
-    )
+    
+    # Добавление +1 просмотра при помощи Redis
+    total_views = r.incr('image:{}:views'.format(image.id))
+    return render(request, "images/image/detail.html", {"section": "images",
+                                                        "image": image,
+                                                        "total_views": total_views})
 
 
 @login_required
