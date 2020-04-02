@@ -59,10 +59,8 @@ def image_detail(request, id, slug):
     
     # Добавление +1 просмотра при помощи Redis и увеличение рейтинга +1
     total_views = r.incr('image:{}:views'.format(image.id))
-    r.zincrby('image.ranking', image.id, 1)
-    return render(request, "images/image/detail.html", {"section": "images",
-                                                        "image": image,
-                                                        "total_views": total_views})
+    r.zincrby('image_ranking', image.id, 1)
+    return render(request, "images/image/detail.html", {"section": "images", "image": image, "total_views": total_views})
 
 
 @login_required
