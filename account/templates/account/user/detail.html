@@ -9,10 +9,10 @@
             <img src="{{ im.url }}" class="user-detail">
         {% endthumbnail %}
     </div>
-    {% with total_followers=user.folowers.count %}
+    {% with total_followers=user.followers.count %}
         <span class="count">
             <span class="total">{{ total_followers }}</span>
-            folower{{ total_folowers|pluralize }}
+            follower{{ total_folowers|pluralize }}
         </span>
         <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow"
         class="follow button">
