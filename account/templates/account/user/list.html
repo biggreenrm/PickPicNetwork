@@ -9,9 +9,13 @@
     {% for user in users %}
         <div class="user">
             <a href="{{ user.get_absolute_url }}">
-                {% thumbnail user.profile.photo "180x180" crop="100%" as im %}
-                    <img src="{{ im.url }}">
-                {% endthumbnail %}
+                {% if not user.profile.photo %}
+                    <img src="/media/images/bomj.png">
+                {% else %}
+                    {% thumbnail user.profile.photo "180x180" crop="100%" as im %}
+                        <img src="{{ im.url }}">
+                    {% endthumbnail %}
+                {% endif %}
             </a>
             <div class="info">
                 <a href="{{ user.get_absolute_url }}" class="title">
