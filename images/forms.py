@@ -9,10 +9,10 @@ class ImageCreateForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = ("title", "url", "description")
-        widgets = {
-            "url": forms.HiddenInput,
-        }  # такой виджет сделает поле невидимым, т.к. адрес будет вставляться через javascript
+        # Этот виджет сделает поле невидимым, т.к. адрес будет вставляться через javascript
+        widgets = {"url": forms.HiddenInput,}
 
+    # Функция, форматирущая url и проверяющая расширение файла изображения
     def clean_url(self):
         url = self.cleaned_data["url"]
         valid_extensions = ["jpg", "jpeg"]
@@ -23,6 +23,8 @@ class ImageCreateForm(forms.ModelForm):
             )
         return url
 
+    # Функция сохранения изображения (форматирование url,
+    # имени, скачивание и сохранение в БД)
     def save(self, force_insert=False, force_update=False, commit=True):
         image = super(ImageCreateForm, self).save(commit=False)
         image_url = self.cleaned_data["url"]
@@ -32,7 +34,7 @@ class ImageCreateForm(forms.ModelForm):
         response = request.urlopen(image_url)  # скачивание картинки
         image.image.save(
             image_name, ContentFile(response.read()), save=False
-        )  # возможна опечатка и сейв нужно менять на коммит
+        )
         if commit:
             image.save()
         return image

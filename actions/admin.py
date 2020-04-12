@@ -3,6 +3,7 @@ from .models import Action
 
 # Register your models here.
 
+# Регистрация приложения "Action" в кабинете администратора
 @admin.register(Action)
 class ActionAdmin(admin.ModelAdmin):
     list_display = ('user', 'verb', 'target', 'created')

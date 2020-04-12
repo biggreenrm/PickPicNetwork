@@ -1,12 +1,25 @@
 from django.urls import path
+# В данном случае используется менеджер контекста "import ... as ..." 
+# чтобы рукописные view не смешались с батареечными
 from django.contrib.auth import views as auth_views
-# в данном случае используется менеджер контекста чтобы рукописные view не смешались с батареечными
 from . import views
 
 urlpatterns = [
-    path("login/", auth_views.LoginView.as_view(), name="login"),
-    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
-    path("", views.dashboard, name="dashboard"),
+    path(
+        "login/",
+         auth_views.LoginView.as_view(),
+         name="login"
+    ),
+    path(
+        "logout/",
+        auth_views.LogoutView.as_view(),
+        name="logout"
+    ),
+    path(
+        "",
+        views.dashboard,
+        name="dashboard"
+    ),
     path(
         "password_change/",
         auth_views.PasswordChangeView.as_view(),
@@ -37,13 +50,29 @@ urlpatterns = [
         auth_views.PasswordResetDoneView.as_view(),
         name="password_reset_complete",
     ),
-    path("register/", views.register, name="register"),
-    path("edit/", views.edit_account, name="edit_account"),
-    path("users/", views.user_list, name="user_list"),
-    path("users/follow/", views.user_follow, name="user_follow"),
-    path("users/<username>/", views.user_detail, name="user_detail"),
+    path(
+        "register/",
+        views.register,
+        name="register"
+    ),
+    path(
+        "edit/",
+         views.edit_account,
+         name="edit_account"
+    ),
+    path(
+        "users/",
+        views.user_list,
+        name="user_list"
+    ),
+    path(
+        "users/follow/",
+        views.user_follow,name="user_follow"
+    ),
+    path(
+        "users/<username>/",
+        views.user_detail,
+        name="user_detail"
+    ),
 ]
-
-# static подходит только для локальной разработки
-# эта настройка теперь позволят Джанго возвращать файлы при обращении по урл
 

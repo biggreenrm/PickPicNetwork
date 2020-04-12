@@ -6,6 +6,13 @@ from django.contrib.auth.models import User
 
 
 class Profile(models.Model):
+    """ Модель Profile.
+    
+    Модель, расширяющая стандартную пользовательскую модель Django методом "один к одному".
+    По сути своей представляет дополнительную таблицу, которая связана по полю "user"
+    со стандартной моделью, добавляя столбцы с датой рождения и фото.
+    """
+    
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_of_birth = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to="users/%Y/%m/%d/", blank=True)
@@ -15,6 +22,13 @@ class Profile(models.Model):
 
 
 class Contact(models.Model):
+    """ Модель Contact.
+    
+    Представляет собой таблицу из трёх столбцов. Первые два ссылаются на зарегистрированных пользователей
+    из стандартной модели Django (используя внешний ключ), где "user_from" - подписчик, "user_to" - тот,
+    на кого подписываются. Третий столбец модели является полем с датой создания связи.
+    """
+    
     user_from = models.ForeignKey('auth.User',
                                   related_name='rel_from_set',
                                   on_delete=models.CASCADE)
@@ -23,9 +37,11 @@ class Contact(models.Model):
                                 on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     
+    # Обратный порядок отображения полей модели
     class Meta:
         ordering = ('-created',)
-        
+    
+    # Переопределение образа отображения модели    
     def __str__(self):
         return '{} follows {}'.format(self.user_from, self.user_to)
 

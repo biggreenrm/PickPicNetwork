@@ -3,9 +3,11 @@ from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from .models import Action
 
-#Позволяет создавать пользовательскую активность 
+
+# Функция, позволяющая создавать записи о пользовательской активности
 def create_action(user, verb, target=None):
-    #Поиск похожего действия совершенного в течении минуты
+    
+    #Поиск похожего действия совершенного в течении последней минуты
     now = timezone.now()
     last_minute = now - datetime.timedelta(seconds=60)
     similiar_actions = Action.objects.filter(user_id=user.id, verb=verb, created__gte=last_minute)

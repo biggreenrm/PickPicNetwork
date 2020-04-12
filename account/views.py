@@ -101,18 +101,19 @@ def user_login(request):
     
     if request.method == "POST":
         form = LoginForm(request.POST)
+        # Этот метод обрезает лишние данные и проверяет их, подгоняя по форматированию
         if form.is_valid():
-            cd = (
-                form.cleaned_data
-            )  # этот метода обрезает лишние данные и проверяет их, подгоняя по форматированию
+            cd = (form.cleaned_data)  
             user = authenticate(
-                request, username=cd["username"], password=cd["password"]
+                request,
+                username=cd["username"],
+                password=cd["password"]
             ) 
         if user is not None:
             if user.is_active:
-                login(
-                    request, user
-                )  # в отличии от authenticate() эта функция сохраняет пользовтеля в сессии, а не ищет его наличие в БД
+                # В отличии от authenticate() эта функция сохраняет пользовтеля
+                # в сессии, а не ищет его наличие в БД
+                login(request, user)
                 return HttpResponse("Authenticated succesfully")
             else:
                 return HttpResponse("Disabled account")
@@ -123,7 +124,7 @@ def user_login(request):
     return render(request, "account/login.html", {"form": form})
 
 
-# view для отображения списка активных пользователей
+# View для отображения списка активных пользователей
 @login_required
 def user_list(request):
     users = User.objects.filter(is_active=True)
@@ -133,7 +134,7 @@ def user_list(request):
                    'users': users})
 
 
-# view вынимает пользователя из БД, принимая на вход запроси его имя
+# View вынимает пользователя из БД, принимая на вход запроси его имя
 @login_required
 def user_detail(request, username):
     user = get_object_or_404(User, username=username, is_active=True)
@@ -147,6 +148,14 @@ def user_detail(request, username):
 @require_POST
 @login_required
 def user_follow(request):
+    """ Подписка на пользователя.
+    
+    Из POST-запроса извлекается id пользователя, на которого нужно подписаться/отписаться,
+    а также тип действия. Если все параметры получены, из БД достаётся пользователь по id.
+    В случае, если действие - это подписка, создаётся строка в таблице (модели) Contacts,
+    связывающая двух пользователей. Если действие - это отписка, то строка в таблице
+    удаляется.
+    """
     user_id = request.POST.get('id')
     action = request.POST.get('action')
     if user_id and action:
