@@ -1,9 +1,0 @@
-.pytest_cache/
-env/
-socialnet/__pycache__/
-tests/
-images/__pycache__/
-common/__pycache__/
-actions/__pycache__/
-account/__pycache__/
-
