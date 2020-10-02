@@ -22,7 +22,6 @@ class Action(models.Model):
                                   null=True,
                                   related_name='target_obj',
                                   on_delete=models.CASCADE)
-    
     #Поле хранящее идентификатор на связанный объект
     target_id = models.PositiveIntegerField(null=True,
                                             blank=True,
