@@ -31,7 +31,7 @@ def register(request):
             # Сохраняем пользователя в БД
             new_user.save()
             Profile.objects.create(user=new_user)
-            create_action(request.user, 'has created an account')
+            create_action(new_user, 'has created an account')
             return render(request, "account/register_done.html", {"new_user": new_user})
     else:
         user_form = UserRegistrationForm()
